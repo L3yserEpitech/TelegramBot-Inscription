@@ -1,9 +1,9 @@
+#!/usr/bin/python3
 import telebot
 from telebot import types
 from telebot.util import quick_markup
 import sys
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
-import pandas as pd
 
 api_key = "6600000609:AAG9M4oEnkTWSHrfVlqlRFi20TWas7q2sfc"
 bot = telebot.TeleBot(api_key)
@@ -40,17 +40,17 @@ def button_click(call):
 
     #anglais
     elif data == 'en_inscription':
-        fr_user_inscription(chat_id)
+        en_user_inscription(chat_id)
         
     elif data == 'en_minor':
-        fr_user_minor(chat_id)
+        en_user_minor(chat_id)
     elif data == 'en_major':
-        fr_user_country(chat_id)
+        en_user_country(chat_id)
         
     elif data == 'en_fr':
-        fr_user_pack(chat_id)
+        en_user_pack(chat_id)
     elif data == 'en_eu':
-        fr_user_pack(chat_id)
+        en_user_pack(chat_id)
     
     
 #message de /start
@@ -86,7 +86,7 @@ def en_bienvenue(chat_id, username):
 
     markup.add(bt_inscription, bt_info, bt_support)
     
-    bot.send_message(chat_id, f"*Hello* {username}*, welcome to the Aurora team! 💎 \
+    bot.send_message(chat_id, f"*Hello {username}*, we welcome you to the Aurora team!  💎 \
     \n\nHow can we help you ❓", reply_markup=markup, parse_mode="Markdown")
 
 #lancement processus d'inscription
@@ -113,8 +113,8 @@ def en_user_inscription(chat_id):
     
     bot.send_message(chat_id, f"*Welcome to the Aurora registration process 💎* \n\n\
 For your information, Aurora trading robots are *100% automated*. \n\n\
-There are no signals to follow: transactions *open and close automatically*. 🤖\n\n\n\
-*‼️ Here is a mandatory questionnaire:*\n\n*-> How old are you?", reply_markup=markup, parse_mode="Markdown")
+There are no signals to follow: trades *open and close automatically*. 🤖\n\n\n\
+*‼️ Here is a mandatory questionnaire:*\n\n*-> How old are you?*", reply_markup=markup, parse_mode="Markdown")
 
 #avertissement mineur
 def fr_user_minor(chat_id):
@@ -133,20 +133,10 @@ def en_user_minor(chat_id):
     markup.add(bt_support)
     
     bot.send_message(chat_id, f"*Trading, like gambling, involves financial risks. \
-Unfortunately, as a minor, you cannot benefit from our services. Thank you for your understanding.", reply_markup=markup, parse_mode="Markdown")
+Unfortunately, as a minor, you cannot benefit from our services. Thank you for your understanding.*", reply_markup=markup, parse_mode="Markdown")
 
 #question country
 def fr_user_country(chat_id):
-    markup = InlineKeyboardMarkup(row_width=2)
-    bt_major = InlineKeyboardButton('United States', callback_data='fr_eu')
-    bt_minor = InlineKeyboardButton('Other', callback_data='fr_fr')
-    bt_support = InlineKeyboardButton('Contact support', url="https://t.me/auroraofficiel")
-
-    markup.add(bt_major, bt_minor, bt_support)
-    
-    bot.send_message(chat_id, f"Question 2/3\n\n-> Your country of residence? 🌏", reply_markup=markup, parse_mode="Markdown")
-
-def en_user_country(chat_id):
     markup = InlineKeyboardMarkup(row_width=2)
     bt_major = InlineKeyboardButton('France', callback_data='fr_eu')
     bt_minor = InlineKeyboardButton('Europe', callback_data='fr_fr')
@@ -154,7 +144,17 @@ def en_user_country(chat_id):
 
     markup.add(bt_major, bt_minor, bt_support)
     
-    bot.send_message(chat_id, f"Question 2/3\n\n-> Ton pays de résidence ? 🌏", reply_markup=markup, parse_mode="Markdown")
+    bot.send_message(chat_id, f"*Question 2/3\n\n-> Ton pays de résidence ? 🌏*", reply_markup=markup, parse_mode="Markdown")
+
+def en_user_country(chat_id):
+    markup = InlineKeyboardMarkup(row_width=2)
+    bt_major = InlineKeyboardButton('United States', callback_data='en_eu')
+    bt_minor = InlineKeyboardButton('Other', callback_data='en_fr')
+    bt_support = InlineKeyboardButton('Contact support', url="https://t.me/auroraofficiel")
+
+    markup.add(bt_major, bt_minor, bt_support)
+    
+    bot.send_message(chat_id, f"*Question 2/3\n\n-> What is your country of residence? 🌏*", reply_markup=markup, parse_mode="Markdown")
     
 #question combien il va investir
 def fr_user_pack(chat_id):
@@ -166,6 +166,16 @@ def fr_user_pack(chat_id):
     markup.add(bt_pack_start, bt_pack_investissor, bt_support)
     
     bot.send_message(chat_id, f"*Question 3/3\n\n➡️ Combien es-tu prêt/e à investir chez nous ?*", reply_markup=markup, parse_mode="Markdown")
+
+def en_user_pack(chat_id):
+    markup = InlineKeyboardMarkup(row_width=2)
+    bt_pack_start = InlineKeyboardButton('500 - 1000€', callback_data='en_pack_start')
+    bt_pack_investissor = InlineKeyboardButton('+1000€', callback_data='en_pack_investissor')
+    bt_support = InlineKeyboardButton('Contact support', url="https://t.me/auroraofficiel")
+    
+    markup.add(bt_pack_start, bt_pack_investissor, bt_support)
+    
+    bot.send_message(chat_id, f"*Question 3/3\n\n➡️ How much are you willing to invest with us ?*", reply_markup=markup, parse_mode="Markdown")
 
 # Lancement du bot
 bot.polling()
