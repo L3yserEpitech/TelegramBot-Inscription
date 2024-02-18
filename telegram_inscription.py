@@ -4,6 +4,7 @@ from telebot import types
 from telebot.util import quick_markup
 import sys
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+import new_client
 
 api_key = "6600000609:AAG9M4oEnkTWSHrfVlqlRFi20TWas7q2sfc"
 bot = telebot.TeleBot(api_key)
@@ -11,6 +12,7 @@ bot = telebot.TeleBot(api_key)
 #gestion d'évenement
 @bot.callback_query_handler(func=lambda call: True)
 def button_click(call):
+    global country
     chat_id = call.message.chat.id
     username = call.from_user.username
     data = call.data
@@ -34,9 +36,19 @@ def button_click(call):
         fr_user_country(chat_id)
         
     elif data == 'fr_fr':
+        country = "France"
         fr_user_pack(chat_id)
     elif data == 'fr_eu':
+        country = "Europe"
         fr_user_pack(chat_id)
+
+    elif data == 'fr_pack1':
+        pack = 'pack1'
+        print(country)
+        new_client.new_client_database(username, country, pack)
+    elif data == 'fr_pack2':
+        pack = 'pack2'
+        new_client.new_client_database(username, country, pack)
 
     #anglais
     elif data == 'en_inscription':
@@ -47,10 +59,19 @@ def button_click(call):
     elif data == 'en_major':
         en_user_country(chat_id)
         
-    elif data == 'en_fr':
+    elif data == 'en_us':
+        country = 'United States'
         en_user_pack(chat_id)
-    elif data == 'en_eu':
+    elif data == 'en_other':
+        country = 'Other'
         en_user_pack(chat_id)
+
+    elif data == 'en_pack1':
+        pack = 'pack1'
+        new_client.new_client_database(username, country, pack)
+    elif data == 'en_pack2':
+        pack = 'pack2'
+        new_client.new_client_database(username, country, pack)
     
     
 #message de /start
@@ -148,8 +169,8 @@ def fr_user_country(chat_id):
 
 def en_user_country(chat_id):
     markup = InlineKeyboardMarkup(row_width=2)
-    bt_major = InlineKeyboardButton('United States', callback_data='en_eu')
-    bt_minor = InlineKeyboardButton('Other', callback_data='en_fr')
+    bt_major = InlineKeyboardButton('United States', callback_data='en_us')
+    bt_minor = InlineKeyboardButton('Other', callback_data='en_other')
     bt_support = InlineKeyboardButton('Contact support', url="https://t.me/auroraofficiel")
 
     markup.add(bt_major, bt_minor, bt_support)
@@ -159,8 +180,8 @@ def en_user_country(chat_id):
 #question combien il va investir
 def fr_user_pack(chat_id):
     markup = InlineKeyboardMarkup(row_width=2)
-    bt_pack_start = InlineKeyboardButton('500 - 1000€', callback_data='fr_pack_start')
-    bt_pack_investissor = InlineKeyboardButton('+1000€', callback_data='fr_pack_investissor')
+    bt_pack_start = InlineKeyboardButton('500 - 1000€', callback_data='fr_pack1')
+    bt_pack_investissor = InlineKeyboardButton('+1000€', callback_data='fr_pack2')
     bt_support = InlineKeyboardButton('Contacter le support', url="https://t.me/auroraofficiel")
     
     markup.add(bt_pack_start, bt_pack_investissor, bt_support)
@@ -169,8 +190,8 @@ def fr_user_pack(chat_id):
 
 def en_user_pack(chat_id):
     markup = InlineKeyboardMarkup(row_width=2)
-    bt_pack_start = InlineKeyboardButton('500 - 1000€', callback_data='en_pack_start')
-    bt_pack_investissor = InlineKeyboardButton('+1000€', callback_data='en_pack_investissor')
+    bt_pack_start = InlineKeyboardButton('500 - 1000€', callback_data='en_pack1')
+    bt_pack_investissor = InlineKeyboardButton('+1000€', callback_data='en_pack2')
     bt_support = InlineKeyboardButton('Contact support', url="https://t.me/auroraofficiel")
     
     markup.add(bt_pack_start, bt_pack_investissor, bt_support)
